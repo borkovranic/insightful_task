@@ -1,0 +1,41 @@
+Assignment
+Your task is to create an automated test case using a testing framework (preferably cross
+platform framework). The goal of the test case is to calculate the exchange rate in USD and EUR,
+given the value in RSD and compare the results from the website and the OS calculator app.
+
+Requirements:
+
+Develop an automated test case that covers the following steps:
+
+1. Open a web browser and navigate to the following currency exchange rate website
+https://www.xe.com/.
+
+2. Convert values 1000, 2000 and 3000 from RSD to EUR and USD and save the results in a
+text file.
+
+3. Retrieve the exchange rates from the webpage.
+
+4. Close the browser.
+
+5. Open a desktop (operating system) calculator application and perform a calculation
+using the exchange rates and convert values 1000, 2000 and 3000 from RSD to EUR and
+USD and save the results in a text file.
+
+6. Make assertions and confirm that the values from the website and the calculator are the
+same.
+
+Additional Requirements (bonus):
+a. Complete the task on at least two different operating systems (Windows, Linux,
+macOS).
+b. Use two exchange offices on the web and then compare the results with the
+calculator (https://wise.com/gb/currency-converter/ and https://www.xe.com/).
+Evaluation criteria
+
+- Assignment should be done in Python based frameworks/tools.
+- Assignment should include a test plan and test case/s.
+- Your tests should be structured and organized in a clear and understandable way using
+the chosen testing framework's best practices.
+- Provide a brief write-up explaining your approach to developing the tests and any
+challenges you encountered during the process.
+- Your submission should include all necessary files and instructions for running the tests.
+

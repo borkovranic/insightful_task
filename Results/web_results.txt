@@ -1,0 +1,6 @@
+1,000 Serbian Dinars =9.7444834 US Dollars
+2,000 Serbian Dinars =19.488967 US Dollars
+3,000 Serbian Dinars =29.23345 US Dollars
+1,000 Serbian Dinars =8.5308293 Euros
+2,000 Serbian Dinars =17.061659 Euros
+3,000 Serbian Dinars =25.592488 Euros
