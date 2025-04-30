@@ -1,3 +1,5 @@
+import subprocess
+
 import pytest
 from datetime import datetime
 from pathlib import Path
@@ -12,7 +14,9 @@ REPORTS_DIR = "reports"
 ARCHIVE_DIR = "reports_archive"
 HTML_REPORT = "report.html"
 
-pytest.main()
+# pytest.main()
+subprocess.run(["pytest", "-s"], capture_output=True, text=True)
+# subprocess.run(["pytest", "-o", "log_cli=true", "-o", "log_cli_level=INFO"])
 
 html_report = Path(__file__).parent / Path(REPORTS_DIR) / "report.html"
 

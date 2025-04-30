@@ -1,0 +1,24 @@
+Once accessed xe.com i noticed that for the first execution, convert button redirects to conversion page, showing resulst.
+
+Idea was to repeat the process for each amount for defined currency:
+- get homepage
+- input rsd currency to original FROM currrency field
+- input target currency to original to TO currrency field
+- input amount
+- click convert buttton
+- extract results from conversion area
+- repeat for each amount and target currency
+
+Once i was at the converting page, i noticed that i can directly change amount, and conversion will happen automatically.
+However, convert button was missing then.
+Another challenge, framework was too fast, extracted conversion value before the amounts were converted here.
+I noticed there is loading indicator, and then waitting for it dinamically to dissapear, then get converted values.
+
+My idea was to create a file with results from calculator calculations, and format them in same manner as web results are saved, then compare the lines in the both files.
+
+I had idea but not the time, to create one base_exchange.py file with class containging the methods equal as such for both websites.
+Then i would have 2 class for each shop that would inheridate the methods from super class, while each for itself handling the convert button, loading indicator and/or any specific logic within them.
+- input From currency
+- input To currency
+- input amount
+- get conversion results

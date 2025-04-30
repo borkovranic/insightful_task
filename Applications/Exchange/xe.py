@@ -28,6 +28,7 @@ class Xe:
         self.page.goto(self.URL)
         self.first_conversion = True
         self.page.wait_for_load_state('domcontentloaded')
+        self.accept_cookies()
 
     def input_amount(self, amount):
         amount_textbox = self.page.get_by_role("textbox", name="Amount")
@@ -77,7 +78,7 @@ class Xe:
         con = self.page.locator(self.CONVERSION)
         from_amount_and_currency = con.locator("p").first.text_content().lstrip().rstrip()
         to_amount_and_currency = con.locator("p").nth(1).text_content().lstrip().rstrip()
-        result_of_conversion = f"{from_amount_and_currency}{to_amount_and_currency}"
+        result_of_conversion = f"{from_amount_and_currency} {to_amount_and_currency}"
         logger.info(f"Result of conversion:\n{from_amount_and_currency} {to_amount_and_currency}")
         return result_of_conversion
 
@@ -104,3 +105,9 @@ class Xe:
         for currency in currency_list:
             self.set_to(currency)
             self.convert_multiple_amounts(amounts_list)
+
+    def accept_cookies(self):
+        try:
+            self.page.get_by_role("button", name="Accept").click()
+        except Exception as e:
+            logger.warning(f"Button Accept not found")
