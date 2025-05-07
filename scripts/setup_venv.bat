@@ -15,4 +15,6 @@ call .venv\Scripts\activate
 
 pip install -r requirements.txt
 
+python -m playwright install
+
 echo Batch job completed successfully!
