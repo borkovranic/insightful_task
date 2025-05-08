@@ -22,3 +22,14 @@ Then i would have 2 class for each shop that would inheridate the methods from s
 - input To currency
 - input amount
 - get conversion results
+
+UPDATE:
+While executing the case for XE about 50 times, i noticed that stability can be improved, opposed to last week executions.
+Sometimes input amounts was done too fast, causing input process to be retried due to speediness and loading indicator disappearing not being detected.
+I improved detecting loading indicator.
+However, i added TC002, which is triggering parametrized URL, directly opening conversion page with prefilled values.
+This is might not be the best practice, but it is working quite good.
+
+NOTE: Test case failure can be caused by conversion rate being captured miliseconds after the conversion.
+As the conversion rates are changing at some decimal place all the time,
+that can cause second or third decimal to mismatch once calculating the conversions with calculator.

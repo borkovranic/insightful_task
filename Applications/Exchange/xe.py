@@ -1,3 +1,5 @@
+import time
+
 from utils.logger import logger
 
 from playwright.sync_api import Page, expect
@@ -35,15 +37,30 @@ class Xe:
         amount_textbox.clear()
         amount_textbox.fill(amount)
 
-        parent_element = amount_textbox.locator("..").locator("..")  # Koristimo ".." da uzmemo parent element
+        parent_element = amount_textbox.locator("..").locator("..")
 
         if self.first_conversion is False:
             loading_indicator = parent_element.locator("svg[xmlns='http://www.w3.org/2000/svg']")
             try:
-                loading_indicator.wait_for(state='visible')
-                loading_indicator.wait_for(state='detached')
+                loading_indicator.wait_for(state='visible', timeout=5000)
+                logger.info("Loading indicator is displayed.")
             except TimeoutError:
-                logger.warning("Loading indicator nije nestao u očekivanom vremenskom okviru.")
+                logger.warning("Loading indicator not displayed yet.")
+
+            for _ in range(60):
+                logger.info("Waiting for loading indicator to disappear...")
+                if not loading_indicator.is_visible():
+                    logger.info("Loading indicator disappeared.")
+                    break
+                time.sleep(0.1)
+            else:
+                logger.warning("Issue with disappearing loading indicator.")
+
+            # try:
+            #     loading_indicator.wait_for(state='detached', timeout=10000)
+            #     logger.info("Loading indicator is not displayed.")
+            # except TimeoutError:
+            #     logger.warning("Loading indicator is still visible.")
 
     def click_currency_element_and_input_name(self, side, currency_name):
         currency_element = self.page.locator(f"#midmarket{side}Currency")
@@ -98,6 +115,7 @@ class Xe:
     def convert_multiple_amounts(self, amounts_list: list):
         for amount in amounts_list:
             self.convert_currency(amount)
+            self.wait_for_conversion_result()
             self.conversion_results.append(self.get_conversion_value())
         self.get_conversion_rate()
 
@@ -111,3 +129,25 @@ class Xe:
             self.page.get_by_role("button", name="Accept").click()
         except Exception as e:
             logger.warning(f"Button Accept not found")
+
+
+    def wait_for_conversion_result(self):
+        result_element = self.page.locator(self.CONVERSION)
+        expect(result_element).to_contain_text("=", timeout=5000)
+
+    def convert_by_parametrized_url(self, currency, amount):
+        url = f"https://www.xe.com/currencyconverter/convert/?Amount={amount}&From=RSD&To={currency.upper()}"
+        logger.info(f"Navigating to URL: {url}")
+        self.page.goto(url)
+        self.page.wait_for_load_state('domcontentloaded')
+
+
+    def multiple_amount_and_currency_conversions_by_parametrized_url(self, amounts_list: list, currency_list: list):
+        for currency in currency_list:
+            for amount in amounts_list:
+                self.convert_by_parametrized_url(currency, amount)
+                if self.first_conversion is True:
+                    self.accept_cookies()
+                    self.first_conversion = False
+                self.conversion_results.append(self.get_conversion_value())
+            self.get_conversion_rate()

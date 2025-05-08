@@ -46,3 +46,32 @@ def test_validate_conversion_from_rsd_to_target_currencies_accurate(page):
         logger.error(f"Test failed with error: {e}")
         close_multiple_calculator_windows()
         raise
+
+
+def test_validate_conversion_with_more_stable_version_by_url(page):
+    try:
+        xe = Xe(page)
+        xe.multiple_amount_and_currency_conversions_by_parametrized_url(amounts, target_currency_ids)
+        write_lines_to_txt(WEB_RESULTS, xe.conversion_results)
+        write_lines_to_txt(CONVERSION_RATES, xe.conversion_rates)
+        format_conversion_rates(WEB_RESULTS, WEB_RESULTS)
+        conversion_rates = parse_conversion_rates(CONVERSION_RATES)
+
+        calculator = Calculator()
+        calculator_results = []
+        for currency in target_currency_ids:
+            currency_conversion_rate = get_conversion_rate(conversion_rates, 'RSD', currency)
+            for amount in amounts:
+                calculator.multiply_numbers(amount, currency_conversion_rate)
+                result = calculator.get_calculator_results()
+                formatted_result = format_conversion_result(amount, result, currency)
+                calculator_results.append(formatted_result)
+        write_lines_to_txt(CALCULATOR_RESULTS, calculator_results)
+        calculator.close_calculator()
+
+        compare_files(WEB_RESULTS, CALCULATOR_RESULTS)
+
+    except Exception as e:
+        logger.error(f"Test failed with error: {e}")
+        close_multiple_calculator_windows()
+        raise
